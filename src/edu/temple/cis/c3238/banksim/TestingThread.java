@@ -20,9 +20,18 @@ public class TestingThread extends Thread {
     public synchronized void run() {
 
         //signal to all threads
-
         for (int i = 0; i < threads.length; i++){
             threads[i].tellToPause();
+        }
+        //check that all threads have stopped
+        for(int i = 0; i < threads.length; i++){
+            if(!threads[i].isFinished()){
+                try {
+                    this.sleep(3);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         int sum = 0;
@@ -42,6 +51,7 @@ public class TestingThread extends Thread {
                     " The bank is in balance");
         }
 
+        //signal to all threads to wake up
         for (int i = 0; i < threads.length; i++){
             threads[i].tellToResume();
         }
