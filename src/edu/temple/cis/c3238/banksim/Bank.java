@@ -34,22 +34,24 @@ public class Bank {
     }
 
     public void test() {
-        int sum = 0;
-        for (Account account : accounts) {
-            System.out.printf("%s %s%n", 
-                    Thread.currentThread().toString(), account.toString());
-            sum += account.getBalance();
-        }
-        System.out.println(Thread.currentThread().toString() + 
-                " Sum: " + sum);
-        if (sum != numAccounts * initialBalance) {
-            System.out.println(Thread.currentThread().toString() + 
-                    " Money was gained or lost");
-            System.exit(1);
-        } else {
-            System.out.println(Thread.currentThread().toString() + 
-                    " The bank is in balance");
-        }
+
+        Thread testingThread = new TestingThread(this, accounts, initialBalance, numAccounts);
+//        int sum = 0;
+//        for (Account account : accounts) {
+//            System.out.printf("%s %s%n",
+//                    Thread.currentThread().toString(), account.toString());
+//            sum += account.getBalance();
+//        }
+//        System.out.println(Thread.currentThread().toString() +
+//                " Sum: " + sum);
+//        if (sum != numAccounts * initialBalance) {
+//            System.out.println(Thread.currentThread().toString() +
+//                    " Money was gained or lost");
+//            System.exit(1);
+//        } else {
+//            System.out.println(Thread.currentThread().toString() +
+//                    " The bank is in balance");
+//        }
     }
 
     public int size() {
