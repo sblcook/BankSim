@@ -12,6 +12,7 @@ public class Bank {
     private final int initialBalance;
     private final int numAccounts;
     private boolean open;
+    private TransferThread[] threads;
 
     public Bank(int numAccounts, int initialBalance) {
         open = true;
@@ -30,13 +31,14 @@ public class Bank {
         if (accounts[from].withdraw(amount)) {
             accounts[to].deposit(amount);
         }
-        if (shouldTest()) test();
+        if (shouldTest()) test(threads);
     }
 
-    public void test() {
+    public void test(TransferThread[] threads) {
 
-        Thread testingThread = new TestingThread(this, accounts, initialBalance, numAccounts);
+        Thread testingThread = new TestingThread(this, accounts, threads, initialBalance, numAccounts);
         testingThread.start();
+
 //        int sum = 0;
 //        for (Account account : accounts) {
 //            System.out.printf("%s %s%n",
@@ -76,4 +78,11 @@ public class Bank {
         return ++ntransacts % NTEST == 0;
     }
 
+    public Thread[] getThreads() {
+        return threads;
+    }
+
+    public void setThreads(TransferThread[] threads) {
+        this.threads = threads;
+    }
 }

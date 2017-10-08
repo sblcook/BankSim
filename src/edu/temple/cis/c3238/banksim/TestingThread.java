@@ -3,28 +3,28 @@ package edu.temple.cis.c3238.banksim;
 public class TestingThread extends Thread {
 
     private final Bank bank;
-//    private Thread[] threads;
+    private TransferThread[] threads;
     private final Account[] accounts;
     private final int initialBalance;
     private final int numAccounts;
 
-    public TestingThread(Bank bank, Account[] accounts, int initialBalance, int numAccounts){
+    public TestingThread(Bank bank, Account[] accounts, TransferThread[] threads, int initialBalance, int numAccounts){
         this.bank = bank;
         this.accounts = accounts;
+        this.threads = threads;
         this.initialBalance = initialBalance;
         this.numAccounts = numAccounts;
     }
 
     @Override
-    public void run(){
-//        for (int i = 0; i < threads.length; i++) {
-//            try {
-//                threads[i].join();
-//            } catch (InterruptedException ex) {
-//                // Ignore this
-//            }
-//        }
-        System.out.println("test");
+    public synchronized void run() {
+
+        //signal to all threads
+
+        for (int i = 0; i < threads.length; i++){
+            threads[i].tellToPause();
+        }
+
         int sum = 0;
         for (Account account : accounts) {
             System.out.printf("%s %s%n",
@@ -40,6 +40,10 @@ public class TestingThread extends Thread {
         } else {
             System.out.println(Thread.currentThread().toString() +
                     " The bank is in balance");
+        }
+
+        for (int i = 0; i < threads.length; i++){
+            threads[i].tellToResume();
         }
     }
 }
