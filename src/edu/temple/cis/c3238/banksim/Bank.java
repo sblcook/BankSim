@@ -36,6 +36,7 @@ public class Bank {
     public void test() {
 
         Thread testingThread = new TestingThread(this, accounts, initialBalance, numAccounts);
+        testingThread.start();
 //        int sum = 0;
 //        for (Account account : accounts) {
 //            System.out.printf("%s %s%n",

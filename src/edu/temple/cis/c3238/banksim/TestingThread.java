@@ -24,6 +24,7 @@ public class TestingThread extends Thread {
 //                // Ignore this
 //            }
 //        }
+        System.out.println("test");
         int sum = 0;
         for (Account account : accounts) {
             System.out.printf("%s %s%n",
