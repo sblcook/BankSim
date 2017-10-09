@@ -15,6 +15,7 @@ public class Bank {
     private final int numAccounts;
     private boolean open;
     Semaphore semaphore;
+    private static int countTransactions = 0;
 
     public Bank(int numAccounts, int initialBalance) {
         open = true;
@@ -28,7 +29,13 @@ public class Bank {
         semaphore = new Semaphore(numAccounts);
     }
 
+    public synchronized void incCountTransactions(){
+        countTransactions++;
+    }
+
     public void transfer(int from, int to, int amount) {
+        incCountTransactions();
+        System.out.println("count transactions: " + countTransactions);
         accounts[from].waitForAvailableFunds(amount);
         if (!open) return;
         try {
@@ -42,7 +49,6 @@ public class Bank {
             semaphore.release();
         }
         if (shouldTest()) test();
-        System.out.println("ntransacts: " + ntransacts);
     }
 
     public synchronized void test() {
