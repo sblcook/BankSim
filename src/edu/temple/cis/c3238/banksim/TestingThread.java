@@ -18,7 +18,7 @@ public class TestingThread extends Thread {
     public synchronized void run() {
         int sum = 0;
         try {
-            bank.semaphore.acquire(10);
+            bank.semaphore.acquire(numAccounts);
             for (Account account : accounts) {
                 System.out.printf("%s %s%n",
                         Thread.currentThread().toString(), account.toString());
