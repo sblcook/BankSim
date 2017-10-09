@@ -42,12 +42,12 @@ public class Bank {
         } finally {
             semaphore.release();
         }
-        if (shouldTest()) test(threads);
+        if (shouldTest()) test();
     }
 
-    public void test(TransferThread[] threads) {
+    public void test() {
 
-        Thread testingThread = new TestingThread(this, accounts, threads, initialBalance, numAccounts);
+        Thread testingThread = new TestingThread(this, accounts, initialBalance, numAccounts);
         testingThread.start();
 
     }
