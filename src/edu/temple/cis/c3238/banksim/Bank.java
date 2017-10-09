@@ -14,8 +14,8 @@ public class Bank {
     private final int initialBalance;
     private final int numAccounts;
     private boolean open;
-    private TransferThread[] threads;
     Semaphore semaphore;
+    private static int countTransactions = 0;
 
     public Bank(int numAccounts, int initialBalance) {
         open = true;
@@ -29,7 +29,13 @@ public class Bank {
         semaphore = new Semaphore(numAccounts);
     }
 
+    public synchronized void incCountTransactions(){
+        countTransactions++;
+    }
+
     public void transfer(int from, int to, int amount) {
+        incCountTransactions();
+        System.out.println("count transactions: " + countTransactions);
         accounts[from].waitForAvailableFunds(amount);
         if (!open) return;
         try {
@@ -45,7 +51,7 @@ public class Bank {
         if (shouldTest()) test();
     }
 
-    public void test() {
+    public synchronized void test() {
 
         Thread testingThread = new TestingThread(this, accounts, initialBalance, numAccounts);
         testingThread.start();
@@ -71,13 +77,5 @@ public class Bank {
     
     public synchronized boolean shouldTest() {
         return ++ntransacts % NTEST == 0;
-    }
-
-    public Thread[] getThreads() {
-        return threads;
-    }
-
-    public void setThreads(TransferThread[] threads) {
-        this.threads = threads;
     }
 }
