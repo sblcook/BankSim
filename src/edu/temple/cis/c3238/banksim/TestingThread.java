@@ -19,27 +19,21 @@ public class TestingThread extends Thread {
     @Override
     public synchronized void run() {
 
-        //signal to all threads
-        for (int i = 0; i < threads.length; i++){
-            threads[i].tellToPause();
-        }
-        //check that all threads have stopped
-        for(int i = 0; i < threads.length; i++){
-            if(!threads[i].isFinished()){
-                try {
-                    this.sleep(3);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        System.out.println("acquired in testing thread");
+        int sum = 0;
+        try {
+            bank.semaphore.acquire(10);
+            for (Account account : accounts) {
+                System.out.printf("%s %s%n",
+                        Thread.currentThread().toString(), account.toString());
+                sum += account.getBalance();
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally{
+            bank.semaphore.release();
         }
 
-        int sum = 0;
-        for (Account account : accounts) {
-            System.out.printf("%s %s%n",
-                    Thread.currentThread().toString(), account.toString());
-            sum += account.getBalance();
-        }
         System.out.println(Thread.currentThread().toString() +
                 " Sum: " + sum);
         if (sum != numAccounts * initialBalance) {
@@ -49,11 +43,6 @@ public class TestingThread extends Thread {
         } else {
             System.out.println(Thread.currentThread().toString() +
                     " The bank is in balance");
-        }
-
-        //signal to all threads to wake up
-        for (int i = 0; i < threads.length; i++){
-            threads[i].tellToResume();
         }
     }
 }

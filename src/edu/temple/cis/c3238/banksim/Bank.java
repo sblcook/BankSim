@@ -1,5 +1,7 @@
 package edu.temple.cis.c3238.banksim;
 
+import java.util.concurrent.Semaphore;
+
 /**
  * @author Cay Horstmann
  * @author Modified by Paul Wolfgang
@@ -13,6 +15,7 @@ public class Bank {
     private final int numAccounts;
     private boolean open;
     private TransferThread[] threads;
+    Semaphore semaphore;
 
     public Bank(int numAccounts, int initialBalance) {
         open = true;
@@ -23,13 +26,21 @@ public class Bank {
             accounts[i] = new Account(this, i, initialBalance);
         }
         ntransacts = 0;
+        semaphore = new Semaphore(numAccounts);
     }
 
     public void transfer(int from, int to, int amount) {
         accounts[from].waitForAvailableFunds(amount);
         if (!open) return;
-        if (accounts[from].withdraw(amount)) {
-            accounts[to].deposit(amount);
+        try {
+            semaphore.acquire();
+            if (accounts[from].withdraw(amount)) {
+                accounts[to].deposit(amount);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            semaphore.release();
         }
         if (shouldTest()) test(threads);
     }
