@@ -14,7 +14,6 @@ public class Bank {
     private final int initialBalance;
     private final int numAccounts;
     private boolean open;
-    private TransferThread[] threads;
     Semaphore semaphore;
 
     public Bank(int numAccounts, int initialBalance) {
@@ -43,9 +42,10 @@ public class Bank {
             semaphore.release();
         }
         if (shouldTest()) test();
+        System.out.println("ntransacts: " + ntransacts);
     }
 
-    public void test() {
+    public synchronized void test() {
 
         Thread testingThread = new TestingThread(this, accounts, initialBalance, numAccounts);
         testingThread.start();
@@ -71,13 +71,5 @@ public class Bank {
     
     public synchronized boolean shouldTest() {
         return ++ntransacts % NTEST == 0;
-    }
-
-    public Thread[] getThreads() {
-        return threads;
-    }
-
-    public void setThreads(TransferThread[] threads) {
-        this.threads = threads;
     }
 }

@@ -27,7 +27,7 @@ public class TestingThread extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally{
-            bank.semaphore.release();
+            bank.semaphore.release(numAccounts);
         }
 
         System.out.println(Thread.currentThread().toString() +
