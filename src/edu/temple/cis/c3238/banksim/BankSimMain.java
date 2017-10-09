@@ -30,7 +30,7 @@ public class BankSimMain {
                 // Ignore this
             }
         }
-        b.test(threads);
+        b.test();
     }
 }
 
