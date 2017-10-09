@@ -3,6 +3,10 @@ package edu.temple.cis.c3238.banksim;
 /**
  * @author Cay Horstmann
  * @author Modified by Paul Wolfgang
+ * @author Project by Sam Cook
+ *
+ * This project fixes the old BankSim where concurrently testing the balance of accounts and transferring would
+ * yield different balances
  */
 public class BankSimMain {
 

@@ -1,5 +1,9 @@
 package edu.temple.cis.c3238.banksim;
 
+/**
+ * @author Project by Sam Cook
+ */
+
 public class TestingThread extends Thread {
 
     private final Bank bank;

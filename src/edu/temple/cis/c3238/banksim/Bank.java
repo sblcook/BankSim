@@ -5,6 +5,7 @@ import java.util.concurrent.Semaphore;
 /**
  * @author Cay Horstmann
  * @author Modified by Paul Wolfgang
+ * @author Project by Sam Cook
  */
 public class Bank {
 

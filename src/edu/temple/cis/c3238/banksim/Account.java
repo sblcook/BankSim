@@ -3,6 +3,7 @@ package edu.temple.cis.c3238.banksim;
 /**
  * @author Cay Horstmann
  * @author Modified by Paul Wolfgang
+ * @author Project by Sam Cook
  */
 public class Account {
 
